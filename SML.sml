@@ -1,3 +1,11 @@
+(*
+ * Zadanie domowe 1, czesc 1
+ *  structure file
+ *)
+structure id291522 :> PART_ONE =
+struct
+  exception NotImplemented
+
 fun sum n=
     if n = 1 then 1
     else n + sum ( n - 1)
