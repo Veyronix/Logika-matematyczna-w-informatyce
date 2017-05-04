@@ -110,3 +110,5 @@ fun cartprod l [] = []
     | cartprod [] k = []
 
         | cartprod (head::tail) k = (lmap (fn y=> (head,y)) k) @ (cartprod tail k);
+        
+ end
