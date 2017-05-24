@@ -7,15 +7,22 @@ structure id291522 :> PART_ONE =
 struct
 exception NotImplemented
 
-datatype 'a tree= Leaf of 'a | Node of 'a tree * 'a * 'a tree
+  datatype 'a tree= Leaf of 'a | Node of 'a tree * 'a * 'a tree
 
-fun sum n=
-	if n = 1 then 1
-	else n + sum ( n - 1)
+ fun sum n = 
+	if n = 1
+	then 
+		1
+	else  
+		n + sum (n-1);
+		
+  fun fac n = 
+	if n = 1 
+	then
+		1
+	else  
+	n * fac (n-1);
 
-fun silnia n=
-	if n = 0 then 1
-	else n*silnia(n-1)
 
 fun fib n=
 	if n < 2 then 1
@@ -32,39 +39,47 @@ fun program (x : int list,y : int)=
 	else program(tl x,y);
 fun max(x : int list)=
 	program(x,0)
-fun sum(Leaf n) = n
-	| sum ( Node (left,n,right)) = (sum left) + n + (sum right)
-fun dep ( tree )=
+fun sumTree(Leaf n) = n
+	| sumTree ( Node (left,n,right)) = (sumTree left) + n + (sumTree right)
+fun depth ( tree )=
 	case tree of
 	Leaf n => 0
 	| Node (left,_,right)=>
-		1+(fn(x,y)=>if x>y then x else y)(dep left,dep right)
-fun binSearch(tree ,x:int)=
-	case tree of
-	Leaf n=> if n=x then true else false
-	| Node(left,n,right)=>
-		(fn(a,b)=> if a>b then binSearch(left,x) else binSearch(right,x))(n,x)
+		1+(fn(x,y)=>if x>y then x else y)(depth left,depth right)
+
+  fun binSearch t x =
+	case t of
+	Leaf a => if a = x then true else false
+	| Node(left, var , right) => 
+		if var = x then true else
+		if x > var then binSearch right x
+else binSearch left x;
+
 fun preorder( tree)=
 	case tree of
 	Leaf n => [n]
 	| Node(left,n,right) =>([n] @ preorder(left)) @ preorder(right)
 
-fun listAdd ([],b:int list)=b
-	|listAdd (a:int list,[]) =a
-	| listAdd ((a:int list),(b:int list))=
-		(hd a + hd b) :: listAdd(tl a,tl b)
+  fun listAdd (first:int list) [] = first
+  | listAdd [] (second:int list) = second
+| listAdd (first:int list as head1 :: tail1) (second:int list as head2 :: tail2) = (head1 + head2) :: listAdd tail1 tail2
 
-fun insert ([], x:int)=[x]
-	| insert (l: int list,x:int)=
-		if x<hd l then x :: l
-		else hd l :: insert(tl l, x)
+fun insert m l = 
+	case l of 
+	nil => [m]
+	| head :: tail => 
+		if m < head then m :: head :: tail
+		else head :: insert m tail;
 
+  fun insort l = 
+	let
+	val sorted = []
+	in
+		case l of
+		nil => sorted
+		| head :: tail => insert head (insort tail)
+end;
 
-
-fun insort( [] ) = []
-	| insort([x])=[x]
-	| insort( x::y)=
-		insert(insort(y),x)
 
 
 
@@ -94,9 +109,10 @@ fun lmap f []=[]
 fun lrev [] = []
 	| lrev (head :: tail )= lrev tail @ [head]
 
-fun lzip l [] = []
-	| lzip [] k=[]
-	| lzip l k = (hd l, hd k) :: (lzip (tl l) (tl k))
+fun lzip (h1::tail1,h2::tail2) = [(h1,h2)] @ lzip (tail1,tail2)
+  |lzip ([], _) = []
+|lzip (_ ,[]) = [];
+
 fun split [] = ([],[])
     |split [x] = ([x],[])
     |split (x1::x2::xs) = let val (x1s,x2s) = split xs
@@ -108,6 +124,7 @@ fun cartprod l [] = []
 	| cartprod (head::tail) k = (lmap (fn y=> (head,y)) k) @ (cartprod tail k);
 
 end
+
 
 
 
