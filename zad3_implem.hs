@@ -37,13 +37,13 @@ slaby_peirce = \(x::(((A->B) -> A) -> A) -> B) -> x(\y -> y(\w-> x( \z -> w))) :
 
 -- rozl_impl_rozdz_odw : (A -> C) /\ (B -> C) -> A \/ B -> C uzycie eleminacji alternatywy w ostatnim kroku
 rozl_impl_rozdz_odw :: ((A -> C), (B -> C)) -> (Either A B) -> C 
-rozl_impl_rozdz_odw = \(x::((A -> C), (B -> C))) -> \(Left y) -> (\(z::A -> C) -> \(w::B -> C) -> z y) (fst x) (snd x) :: C
+rozl_impl_rozdz_odw = \(x::((A -> C), (B -> C))) -> \(Left y) -> (\(w::A -> C) -> \(z::B -> C) -> w y) (fst x) (snd x) :: C
 rozl_impl_rozdz_odw_2 :: ((A -> C), (B -> C)) -> (Either A B) -> C
-rozl_impl_rozdz_odw_2 = \(x::((A -> C), (B -> C))) -> \(Right y) -> (\(z::A -> C) -> \(w::B -> C) -> w y) (fst x) (snd x) :: C
+rozl_impl_rozdz_odw_2 = \(x::((A -> C), (B -> C))) -> \(Right y) -> (\(w::A -> C) -> \(z::B -> C) -> z y) (fst x) (snd x) :: C
 
 -- curry : (A /\ B -> C) -> A -> B -> C
 curry = \(x::(A,B)->C) -> \(y::A) -> \(z::B) -> x (y,z) :: C 
 
 -- uncurry : (A -> B -> C) -> A /\ B -> C
-
 uncurry = \(x::A->B->C) -> \(y::(A,B)) -> (x (fst y)) (snd y) :: C
+
