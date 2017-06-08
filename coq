@@ -63,7 +63,7 @@ intro HB.
 elim H.
 ass HA.
 ass HB.
-Qed
+Qed.
 
 
 Theorem diamencik : (A -> B) -> (A -> C) -> (B -> C -> D) -> A -> D.
